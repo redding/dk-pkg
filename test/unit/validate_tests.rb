@@ -110,8 +110,7 @@ class Dk::Pkg::Validate
           self.setup_blocks << block
         end
         include Dk::Pkg::Validate::TestHelpers
-        attr_reader :dk_pkg_manifest_path, :dk_pkg_installed_pkgs
-        attr_reader :params
+        attr_reader :dk_pkg_installed_pkgs, :params
         def initialize
           self.class.setup_blocks.each{ |b| self.instance_eval(&b) }
         end
@@ -124,9 +123,8 @@ class Dk::Pkg::Validate
       assert_includes MuchPlugin, Dk::Pkg::Validate::TestHelpers
     end
 
-    should "setup the ivars and params the validate task does" do
-      exp = subject.dk_pkg_manifest_path
-      assert_equal exp, subject.params[Dk::Pkg::MANIFEST_PATH_PARAM_NAME]
+    should "setup the ivars and params the validate task needs" do
+      assert_not_nil subject.params[Dk::Pkg::MANIFEST_PATH_PARAM_NAME]
 
       exp = subject.dk_pkg_installed_pkgs
       assert_equal exp, subject.params[Dk::Pkg::INSTALLED_PKGS_PARAM_NAME]
