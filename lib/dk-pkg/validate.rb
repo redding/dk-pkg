@@ -17,7 +17,17 @@ module Dk::Pkg
         raise ArgumentError, "no #{MANIFEST_PATH_PARAM_NAME.inspect} param set"
       end
 
-      cmd! "touch #{params[MANIFEST_PATH_PARAM_NAME]}"
+      if !cmd("test -e #{params[MANIFEST_PATH_PARAM_NAME]}").success?
+        cmd! "touch #{params[MANIFEST_PATH_PARAM_NAME]}"
+        if param?(MANIFEST_MODE_PARAM_NAME)
+          cmd! "chmod #{params[MANIFEST_MODE_PARAM_NAME]} " \
+                     "#{params[MANIFEST_PATH_PARAM_NAME]}"
+        end
+        if param?(MANIFEST_OWNER_PARAM_NAME)
+          cmd! "chown #{params[MANIFEST_OWNER_PARAM_NAME]} " \
+                     "#{params[MANIFEST_PATH_PARAM_NAME]}"
+        end
+      end
       serialized_pkgs = cmd!("cat #{params[MANIFEST_PATH_PARAM_NAME]}").stdout
       set_param INSTALLED_PKGS_PARAM_NAME, Manifest.deserialize(serialized_pkgs)
     end

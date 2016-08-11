@@ -12,6 +12,8 @@ module Dk::Pkg
 
     should "know its param names" do
       assert_equal 'dk_pkg_manifest_path',  MANIFEST_PATH_PARAM_NAME
+      assert_equal 'dk_pkg_manifest_mode',  MANIFEST_MODE_PARAM_NAME
+      assert_equal 'dk_pkg_manifest_owner', MANIFEST_OWNER_PARAM_NAME
       assert_equal 'dk_pkg_installed_pkgs', INSTALLED_PKGS_PARAM_NAME
     end
 
