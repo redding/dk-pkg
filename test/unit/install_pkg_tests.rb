@@ -90,4 +90,72 @@ module Dk::Pkg::InstallPkg
 
   end
 
+  class TestHelpersTests < UnitTests
+    desc "TestHelpers"
+    setup do
+      @task_class = Class.new do
+        include Dk::Pkg::InstallPkg
+
+        def run!
+          params['pkgs'].each do |(pkg_name, pkg_cmd)|
+            install_pkg(pkg_name){ cmd(pkg_cmd) }
+          end
+          run_task TestTask
+        end
+      end
+
+      # use an array of tuples so we don't have to worry about hash randomly
+      # ordering its key/values when testing
+      @params['pkgs'] = Factory.integer(3).times.map do
+        [Factory.string, Factory.string]
+      end
+      @runner = test_runner(@task_class, :params => @params)
+      @runner.run
+
+      @context_class = Class.new do
+        def self.setup(&block); end # needed for `Dk::Pkg::Validate::TestHelpers`
+        include Dk::Pkg::InstallPkg::TestHelpers
+
+        def initialize(assert_context)
+          @assert_context = assert_context
+        end
+
+        # needed to test `assert_dk_pkg_installed`
+        def assert_includes(*args)
+          @assert_context.assert_includes(*args)
+        end
+      end
+      @context = @context_class.new(self)
+    end
+    subject{ @context }
+
+    should have_imeths :assert_dk_pkg_installed, :non_dk_install_pkg_runs
+
+    should "use much-plugin" do
+      assert_includes MuchPlugin, Dk::Pkg::InstallPkg::TestHelpers
+    end
+
+    should "include dk-pkg Validate test helpers" do
+      assert_includes Dk::Pkg::Validate::TestHelpers, @context_class
+    end
+
+    should "provide a helper for asserting a pkg was installed" do
+      @params['pkgs'].each do |pkg_name, pkg_cmd|
+        subject.assert_dk_pkg_installed(@runner, pkg_name)
+      end
+    end
+
+    should "know how to select non dk-pkg install pkg runs" do
+      runs = subject.non_dk_install_pkg_runs(@runner)
+      assert_not_equal runs, @runner.runs
+      assert_equal @params['pkgs'].size + 1, runs.size
+      cmd_runs = runs[0, @params['pkgs'].size]
+      assert_equal @params['pkgs'].map(&:last), cmd_runs.map(&:cmd_str)
+      assert_equal TestTask, runs.last.task_class
+    end
+
+  end
+
+  TestTask = Class.new{ include Dk::Task }
+
 end
