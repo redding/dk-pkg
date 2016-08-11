@@ -1,5 +1,5 @@
 require "dk-pkg/version"
 
-module DkPkg
-  # TODO: your code goes here...
+module Dk; end
+module Dk::Pkg
 end

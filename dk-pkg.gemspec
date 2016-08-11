@@ -5,12 +5,12 @@ require "dk-pkg/version"
 
 Gem::Specification.new do |gem|
   gem.name        = "dk-pkg"
-  gem.version     = DkPkg::VERSION
-  gem.authors     = ["TODO: authors"]
-  gem.email       = ["TODO: emails"]
-  gem.summary     = "TODO: Write a gem summary"
-  gem.description = "TODO: Write a gem description"
-  gem.homepage    = "TODO: homepage"
+  gem.version     = Dk::Pkg::VERSION
+  gem.authors     = ["Kelly Redding", "Collin Redding"]
+  gem.email       = ["kelly@kellyredding.com", "collin.redding@me.com"]
+  gem.summary     = "Dk logic for installing pkgs"
+  gem.description = "Dk logic for installing pkgs"
+  gem.homepage    = "https://github.com/redding/dk-pkg"
   gem.license     = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
@@ -19,6 +19,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_development_dependency("assert", ["~> 2.16.1"])
-  # TODO: gem.add_dependency("gem-name", ["~> 0.0.0"])
 
 end
