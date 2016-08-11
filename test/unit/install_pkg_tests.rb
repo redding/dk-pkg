@@ -27,7 +27,7 @@ module Dk::Pkg::InstallPkg
     end
     subject{ @task_class }
 
-    should "be a Dk::Task" do
+    should "be a Dk task" do
       assert_includes Dk::Task, subject
     end
 
@@ -82,7 +82,7 @@ module Dk::Pkg::InstallPkg
 
     should "complain if passed invalid args" do
       assert_raises(ArgumentError) do
-        subject.task.instance_eval{ install_pkg([nil, ''].choice){ } }
+        subject.task.instance_eval{ install_pkg([nil, ''].sample){ } }
       end
       assert_raises(ArgumentError) do
         subject.task.instance_eval{ install_pkg(Factory.string) }
@@ -147,7 +147,7 @@ module Dk::Pkg::InstallPkg
     end
 
     should "know how to select non dk-pkg install pkg runs" do
-      runs = subject.non_dk_install_pkg_runs(@runner)
+      runs = subject.non_dk_install_pkg_runs(@runner, @runner.runs)
       assert_not_equal runs, @runner.runs
       assert_equal @params['pkgs'].size + 1, runs.size
       cmd_runs = runs[0, @params['pkgs'].size]
