@@ -121,7 +121,7 @@ class Dk::Pkg::Validate
     subject{ @context }
 
     should "use much-plugin" do
-      assert_includes MuchPlugin, @context_class
+      assert_includes MuchPlugin, Dk::Pkg::Validate::TestHelpers
     end
 
     should "setup the ivars and params the validate task does" do
