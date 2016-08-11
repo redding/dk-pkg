@@ -1,5 +1,6 @@
 require 'dk/task'
 require 'dk-pkg/constants'
+require 'dk-pkg/manifest'
 
 module Dk::Pkg
 
@@ -17,8 +18,8 @@ module Dk::Pkg
       end
 
       cmd! "touch #{params[MANIFEST_PATH_PARAM_NAME]}"
-      manifest = cmd!("cat #{params[MANIFEST_PATH_PARAM_NAME]}").stdout
-      set_param INSTALLED_PKGS_PARAM_NAME, manifest.split(MANIFEST_SEPARATOR)
+      serialized_pkgs = cmd!("cat #{params[MANIFEST_PATH_PARAM_NAME]}").stdout
+      set_param INSTALLED_PKGS_PARAM_NAME, Manifest.deserialize(serialized_pkgs)
     end
 
     module TestHelpers

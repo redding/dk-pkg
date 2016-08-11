@@ -3,6 +3,7 @@ require 'dk-pkg/validate'
 
 require 'dk/task'
 require 'dk-pkg/constants'
+require 'dk-pkg/manifest'
 
 class Dk::Pkg::Validate
 
@@ -34,7 +35,7 @@ class Dk::Pkg::Validate
     desc "when run"
     setup do
       @manifest_path  = Factory.file_path
-      @installed_pkgs = Factory.installed_pkgs
+      @installed_pkgs = Factory.manifest_pkgs
 
       @exp_cat_cmd = "cat #{@manifest_path}"
 
@@ -47,7 +48,7 @@ class Dk::Pkg::Validate
     private
 
     def stub_cat_manifest_file_cmd(runner, manifest = nil)
-      manifest ||= Factory.manifest(@installed_pkgs)
+      manifest ||= Dk::Pkg::Manifest.serialize(@installed_pkgs)
       runner.stub_cmd(@exp_cat_cmd){ |s| s.stdout = manifest }
     end
 
