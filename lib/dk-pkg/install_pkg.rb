@@ -61,11 +61,11 @@ module Dk::Pkg
           assert_includes pkg_name, test_runner.params[INSTALLED_PKGS_PARAM_NAME]
         end
 
-        def non_dk_install_pkg_runs(test_runner)
+        def non_dk_install_pkg_runs(test_runner, test_runner_runs)
           manifest_path          = test_runner.params[MANIFEST_PATH_PARAM_NAME]
           write_manifest_cmd_str = WRITE_MANIFEST_CMD_STR_PROC.call(manifest_path)
 
-          test_runner.runs.reject do |run|
+          test_runner_runs.reject do |run|
             validate_task_run  = run.kind_of?(Dk::TaskRun) &&
                                  run.task_class == Dk::Pkg::Validate
             write_manifest_cmd = run.kind_of?(Dk::Local::CmdSpy) &&
