@@ -61,7 +61,8 @@ module Dk::Pkg::InstallPkg
       # there will always be +1 because of the Validate task being run
       assert_equal 2, subject.runs.size
       tee_cmd = subject.runs.last
-      assert_equal "tee #{@dk_pkg_manifest_path}", tee_cmd.cmd_str
+      exp = "tee #{@params[Dk::Pkg::MANIFEST_PATH_PARAM_NAME]}"
+      assert_equal exp, tee_cmd.cmd_str
 
       exp_pkgs = [@params['pkg-name']]
       assert_equal Dk::Pkg::Manifest.serialize(exp_pkgs), tee_cmd.run_input

@@ -29,11 +29,10 @@ module Dk::Pkg
         include Dk::Task::TestHelpers
 
         setup do
-          @dk_pkg_manifest_path  ||= Factory.file_path
           @dk_pkg_installed_pkgs ||= []
 
           @params ||= {}
-          @params[MANIFEST_PATH_PARAM_NAME]  ||= @dk_pkg_manifest_path
+          @params[MANIFEST_PATH_PARAM_NAME]  ||= Factory.file_path
           @params[INSTALLED_PKGS_PARAM_NAME] ||= @dk_pkg_installed_pkgs
         end
 
