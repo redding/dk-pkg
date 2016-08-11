@@ -1,5 +1,5 @@
-require "dk-pkg/version"
+require 'dk-pkg/version'
+require 'dk-pkg/constants'
 
-module Dk; end
-module Dk::Pkg
-end
+# require the tasks for convenience
+require 'dk-pkg/validate'
